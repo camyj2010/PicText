@@ -1,6 +1,12 @@
+
+
 <div class="centered">
+  <img *ngIf="imageUrl" [src]="imageUrl" alt="Imagen seleccionada">
+  <div *ngIf="!imageUrl" class="empty-box"></div>
+  
   <button class="raised-button" (click)="uploadImage()">
     Upload Image
     <input type="file" style="display: none;" accept="image/*">
   </button>
 </div>
+
