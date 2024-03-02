@@ -1,0 +1,74 @@
+html, body {
+    height: 100%;
+    margin: 0;
+  }
+
+  .header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 10%;
+    position: fixed;
+    top: 20%;
+    left: 0;
+    right: 0;
+}
+.header p {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+.text-input {
+    margin-bottom: 20px; /* Espaciado inferior para separar del botón */
+  }
+  
+.text-input input {
+    width: 700px;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+  }
+.raised-button {
+    background-color: #F87A34;
+    border-radius: 0.25rem;
+    border: none;
+    padding: 0.75rem 3rem;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease; /* Efecto de transición */
+  }
+.raised-button:hover {
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2), 0px 8px 16px rgba(0, 0, 0, 0.2); /* Efecto de elevación al pasar el mouse */
+}
+
+.centered {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 40%;
+  width: 30%; /* asegúrate de que el contenedor ocupe todo el ancho disponible */
+  position: fixed; /* asegúrate de que el contenedor sea fijo */
+  top: 45%; /* asegúrate de que el contenedor esté pegado a la parte superior */
+  left: 18%; /* asegúrate de que el contenedor esté pegado a la izquierda */
+}
+
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra horizontalmente */
+  justify-content: center; /* Centra verticalmente */
+}
+
+.empty-box {
+  width: 200px;
+  height: 200px;
+  border: 2px dashed #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px; /* Espaciado inferior para separar del botón */
+}
