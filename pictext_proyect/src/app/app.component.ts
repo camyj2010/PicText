@@ -1,16 +1,20 @@
-import { Component, NgModule  } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { MatButtonModule } from '@angular/material/button'
-import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms'; // Importa FormsModule
+import { CommonModule } from '@angular/common'; // Importa CommonModule
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet,MatButtonModule,CommonModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule // Agrega FormsModule aquí
+  ]
 })
 export class AppComponent {
+  textImput: string = '';
+
   imageUrl: string | undefined;
   uploadImage() {
     const input = document.createElement('input');
@@ -31,10 +35,8 @@ export class AppComponent {
     });
     input.click();
   }
-}
 
-@NgModule({
-  imports: [CommonModule], // Agrega CommonModule al array de imports
-  bootstrap: [AppComponent]
-})
-export class AppModule { }
+  showText() {
+    console.log('Texto ingresado:', this.textImput);
+  }
+}
