@@ -1,15 +1,37 @@
-<div class="header">
-  <p>¿Qué deseas hacer?</p>
-  <div class="text-input">
-    <input type="text" placeholder="Ingresa tu texto aquí" [(ngModel)]="textImput" (keyup.enter)="showText()">
-  </div>
+<header>
+	<img src="assets/picText.png" alt="Logo" class="logo">
+</header>
+<div class="inputPromt">
+	<p>¿Qué deseas hacer?</p>
+	<div class="text-input">
+		<input type="text" placeholder="Ingresa tu texto aquí" [(ngModel)]="textImput" (keyup.enter)="showText()">
+	</div>
 </div>
 <div class="centered">
-  <img *ngIf="imageUrl" [src]="imageUrl" alt="Imagen seleccionada">
-  <div *ngIf="!imageUrl" class="empty-box"></div>
-  
-  <button class="raised-button" (click)="uploadImage()">
-    Upload Image
-    <input type="file" style="display: none;" accept="image/*">
-  </button>
+	<div class="uploadImg">
+		@if (imageUrl) {
+		<div class="filled-box">
+			<img [src]="imageUrl" alt="Imagen seleccionada">
+		</div>
+		} @else {
+		<div class="empty-box"></div>
+		}
+		<button class="raised-button" (click)="uploadImage()">
+			Upload Image
+			<input type="file" style="display: none;" accept="image/*">
+		</button>
+	</div>
+	<div class="uploadImg">
+		@if (imageUrl) {
+		<div class="filled-box">
+			<img [src]="imageUrl" alt="Imagen seleccionada">
+		</div>
+		} @else {
+		<div class="empty-box"></div>
+		}
+		<button class="raised-button" (click)="uploadImage()">
+			Upload Image
+			<input type="file" style="display: none;" accept="image/*">
+		</button>
+	</div>
 </div>
