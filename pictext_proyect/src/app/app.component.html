@@ -24,11 +24,18 @@
 	<div class="uploadImg">
 
 		<div class="text-box"> {{textImage}} </div>
-
-		<button class="raised-button" (click)="uploadImage()">
-			Download PDF
-			<input type="file" style="display: none;" accept="image/*">
-		</button>
+		@if (textImage != '') {
+			<button class="raised-button" (click)="uploadImage()">
+				Download PDF
+				<input type="file" style="display: none;" accept="image/*">
+			</button>
+		}@else {
+			<button class="raised-button" disabled (click)="uploadImage()">
+				Download PDF
+				<input type="file" style="display: none;" accept="image/*">
+			</button>
+		}
+		
 	</div>
 </div>
 <div class="centered">
