@@ -22,15 +22,11 @@
 		</button>
 	</div>
 	<div class="uploadImg">
-		@if (imageUrl) {
-		<div class="filled-box">
-			<img [src]="imageUrl" alt="Imagen seleccionada">
-		</div>
-		} @else {
-		<div class="empty-box"></div>
-		}
+
+		<div class="text-box"> {{textImage}} </div>
+
 		<button class="raised-button" (click)="uploadImage()">
-			Upload Image
+			Download PDF
 			<input type="file" style="display: none;" accept="image/*">
 		</button>
 	</div>

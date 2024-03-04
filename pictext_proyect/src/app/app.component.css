@@ -60,7 +60,14 @@ body {
 	margin-bottom: 10px;
 	/* Espaciado inferior para separar del botón */
 }
-
+.text-box{
+	width: 300px;
+	height: 300px;
+	border: 2px solid #ccc;
+	padding: 3px;
+	margin-bottom: 10px;
+	overflow-y: scroll;
+}
 .filled-box {
 	width: 300px;
 	height: 300px;
