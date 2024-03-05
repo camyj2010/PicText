@@ -39,7 +39,13 @@
 	</div>
 </div>
 <div class="centered">
+	@if(imageUrl){
 	<button class="raised-button">
 		Submit
 	</button>
+	}@else{
+		<button class="raised-button" disabled>
+			Submit
+		</button>
+	}
 </div>

@@ -35,3 +35,9 @@ footer p {
 		font-size: 10px;
 	}
 }
+@media (max-height: 800px){
+	footer {
+		position: sticky;
+		font-size: 10px;
+	}
+}
