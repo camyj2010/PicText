@@ -25,14 +25,12 @@
 
 		<div class="text-box"> {{textImage}} </div>
 		@if (textImage != '') {
-			<button class="raised-button" (click)="uploadImage()">
+			<button class="raised-button" (click)="downloadPDF()">
 				Download PDF
-				<input type="file" style="display: none;" accept="image/*">
 			</button>
 		}@else {
-			<button class="raised-button" disabled (click)="uploadImage()">
+			<button class="raised-button" disabled>
 				Download PDF
-				<input type="file" style="display: none;" accept="image/*">
 			</button>
 		}
 		

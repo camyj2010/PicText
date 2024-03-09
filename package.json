@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "buffer": "^6.0.3",
+    "fontkit": "^2.0.2",
+    "pdf-lib": "^1.17.1",
+    "pdfkit": "^0.14.0"
+  }
+}
