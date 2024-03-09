@@ -1,0 +1,49 @@
+<header>
+	<img src="assets/picText.png" alt="Logo" class="logo">
+</header>
+<div class="inputPromt">
+	<p>¿Qué deseas hacer?</p>
+	<div class="text-input">
+		<input type="text" placeholder="Ingresa tu texto aquí" [(ngModel)]="textImput" (keyup.enter)="showText()">
+	</div>
+</div>
+<div class="centered">
+	<div class="uploadImg">
+		@if (imageUrl) {
+		<div class="filled-box">
+			<img [src]="imageUrl" alt="Imagen seleccionada">
+		</div>
+		} @else {
+		<div class="empty-box"></div>
+		}
+		<button class="raised-button" (click)="uploadImage()">
+			Upload Image
+			<input type="file" style="display: none;" accept="image/*">
+		</button>
+	</div>
+	<div class="uploadImg">
+
+		<div class="text-box"> {{textImage}} </div>
+		@if (textImage != '') {
+			<button class="raised-button" (click)="downloadPDF()">
+				Download PDF
+			</button>
+		}@else {
+			<button class="raised-button" disabled>
+				Download PDF
+			</button>
+		}
+		
+	</div>
+</div>
+<div class="centered">
+	@if(imageUrl){
+	<button class="raised-button">
+		Submit
+	</button>
+	}@else{
+		<button class="raised-button" disabled>
+			Submit
+		</button>
+	}
+</div>

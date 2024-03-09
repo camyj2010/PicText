@@ -1,0 +1,118 @@
+html,
+body {
+	height: 100%;
+	margin: 0;
+}
+.inputPromt {
+	position: relative;
+	max-width: 60%;
+	margin: 4rem auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.inputPromt p {
+	font-size: 1.5rem;
+	margin-bottom: 20px;
+}
+
+.text-input {
+	position: relative;
+	display: flex;
+	margin-bottom: 20px;
+	width: 100%;
+	justify-content: center;
+	align-items: center;
+}
+
+.text-input input {
+	width: 80%;
+	padding: 10px;
+	font-size: 16px;
+	border: 2px solid #ccc;
+	border-radius: 5px;
+}
+
+.centered {
+	display: flex;
+	max-width: 70%;
+	margin: 0 auto;
+	justify-content: space-around;
+	align-items: center;
+	padding-bottom: 3rem;
+}
+
+.uploadImg {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 2rem;
+}
+
+.empty-box {
+	width: 300px;
+	height: 300px;
+	border: 2px dashed #ccc;
+	margin-bottom: 10px;
+	/* Espaciado inferior para separar del botón */
+}
+.text-box{
+	width: 300px;
+	height: 300px;
+	border: 2px solid #ccc;
+	padding: 3px;
+	margin-bottom: 10px;
+	overflow-y: scroll;
+}
+.filled-box {
+	width: 300px;
+	height: 300px;
+	margin-bottom: 10px;
+	/* Espaciado inferior para separar del botón */
+}
+
+.filled-box img {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	/* Espaciado inferior para separar del botón */
+}
+
+.raised-button {
+	position: relative;
+	background-color: #F87A34;
+	border-radius: 0.25rem;
+	border: none;
+	padding: 0.75rem 3rem;
+	font-size: 1rem;
+	font-weight: bold;
+	cursor: pointer;
+	transition: box-shadow 0.3s ease;
+	/* Efecto de transición */
+}
+
+.raised-button:hover {
+	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2), 0px 8px 16px rgba(0, 0, 0, 0.2);
+	/* Efecto de elevación al pasar el mouse */
+}
+
+@media (max-width: 768px) {
+	.inputPromt {
+		max-width: 100%;
+	}
+}
+
+@media (max-width: 900px) {
+	.centered {
+		display: flex;
+		flex-direction: column;
+		max-width: 80%;
+		margin: 0 auto;
+		justify-content: space-around;
+		align-items: center;
+	}
+}
