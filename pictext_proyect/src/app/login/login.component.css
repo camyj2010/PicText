@@ -1,0 +1,82 @@
+
+header {
+	background-color: #f8f9fa;
+	padding: 0px;
+	margin-bottom: 20px;
+	border-radius: 5px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2{
+	padding-top: 4rem;
+	width: 100%;
+	text-align: center;
+	margin-top: 20px;
+	justify-self: center;
+}
+
+input{
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+button{
+	width: 100%;
+	background-color: #1a8d29;
+	color: white;
+	padding: 14px 20px;
+	margin: 8px 0;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.homeLink {
+	position: absolute;
+	display: flex;
+	width: 30px;
+	height: 30px;
+	align-items: center;
+	justify-content: center;
+	left: 30px;
+	top: 30px;
+	text-decoration: none;
+	background-color: rgb(220, 214, 226);
+	border-radius: 50px;
+	transition: 0.3s;
+}
+
+.homeLink:hover {
+	background-color: rgb(200, 200, 200);
+	transform: scale(1.1);
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.login {
+	width: 60%;
+	position: relative;
+	margin: auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+footer {
+	position: absolute;
+	bottom: 0;
+	background-color: #f8f9fa;
+	padding: 1rem 0 1rem 0;
+	width: 100%;
+	max-width: 100%;
+}
+
+footer p {
+	margin-left: 1em;
+	font-size: 12px;
+}
