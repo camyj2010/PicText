@@ -3,13 +3,12 @@ import {PDFDocument, rgb} from 'pdf-lib'
 import { FormsModule } from '@angular/forms'; // Importa FormsModule
 import { CommonModule } from '@angular/common'; // Importa CommonModule
 import {MatTableModule,MatTableDataSource} from '@angular/material/table';
-import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import { UserService, LoginResponse } from '../user.service';
 
 @Component({
   selector: 'app-pic-text',
   standalone: true,
-  imports: [ CommonModule, FormsModule, MatTableModule, MatPaginatorModule],
+  imports: [ CommonModule, FormsModule, MatTableModule],
   templateUrl: './pic-text.component.html',
   styleUrl: './pic-text.component.css'
 })
@@ -18,10 +17,7 @@ export class PicTextComponent implements AfterViewInit {
   displayedColumns: string[] = ['position', 'image', 'text'];
   dataSource = new MatTableDataSource<recordElement>(RECORD_DATA);
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
     this.getUserData();
   }
 
@@ -152,6 +148,7 @@ export class PicTextComponent implements AfterViewInit {
   updateRecordData(recordHistory: Array<{ image: string, text: string }>) {
     // Limpiar el array RECORD_DATA antes de agregar los nuevos datos del historial del usuario
     RECORD_DATA.length = 0;
+    console.log('Entre a la funcion')
   
     // Iterar sobre el historial del usuario y agregar cada entrada a RECORD_DATA
     recordHistory.forEach((record, index) => {
@@ -160,6 +157,7 @@ export class PicTextComponent implements AfterViewInit {
         image: record.image,
         text: record.text
       });
+      console.log('He añadido un elemento')
     });
   
     // Actualizar la fuente de datos de la tabla
