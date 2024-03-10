@@ -1,17 +1,29 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit, ViewChild } from '@angular/core';
 import {PDFDocument, rgb} from 'pdf-lib'
 import { FormsModule } from '@angular/forms'; // Importa FormsModule
 import { CommonModule } from '@angular/common'; // Importa CommonModule
+import {MatTableModule,MatTableDataSource} from '@angular/material/table';
+import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 
 @Component({
   selector: 'app-pic-text',
   standalone: true,
-  imports: [ CommonModule, FormsModule],
+  imports: [ CommonModule, FormsModule, MatTableModule, MatPaginatorModule],
   templateUrl: './pic-text.component.html',
   styleUrl: './pic-text.component.css'
 })
-export class PicTextComponent {
-textImput: string = '';
+export class PicTextComponent implements AfterViewInit {
+
+  displayedColumns: string[] = ['position', 'image', 'text'];
+  dataSource = new MatTableDataSource<recordElement>(RECORD_DATA);
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+
+  textImput: string = '';
 
   imageUrl: string | undefined;
 
@@ -110,3 +122,13 @@ textImput: string = '';
     console.log('Texto ingresado:', this.textImput);
   }
 }
+
+export interface recordElement {
+  position: number;
+  image: string;
+  text: string;
+}
+
+const RECORD_DATA: recordElement[] = [
+  {position: 1, image: 'ejemplo', text: 'Este es un ejemplo'},
+];

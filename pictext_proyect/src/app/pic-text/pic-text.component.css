@@ -100,6 +100,34 @@ body {
 	/* Efecto de elevación al pasar el mouse */
 }
 
+.record {
+	position: relative;
+	max-width: 70%;
+	margin: 1rem auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.record p {
+	font-size: 1.5rem;
+	margin-bottom: 20px;
+}
+
+.record-table {
+	position: relative;
+	display: flex;
+	margin-bottom: 20px;
+	width: 100%;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+table {
+	width: 100%;
+}
+
 footer {
 	position: absolute;
 	bottom: 0;
