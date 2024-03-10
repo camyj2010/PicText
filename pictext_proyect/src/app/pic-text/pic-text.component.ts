@@ -85,12 +85,14 @@ export class PicTextComponent implements AfterViewInit {
 
     window.URL.revokeObjectURL(url);
     try {
-      // Llama al servicio para actualizar el historial del usuario
+      // 
       await this.userService.updateUserRecord('65ed2051fe0962e8b1f5641c', { image: this.imageUrl || '', text: this.textImage });
       console.log('Historial del usuario actualizado correctamente.');
+
+      this.getUserData()
     } catch (error) {
       console.error('Error al actualizar el historial del usuario:', error);
-      // Aquí puedes manejar el error de acuerdo a tus necesidades
+
     }
   }
 
@@ -132,13 +134,12 @@ export class PicTextComponent implements AfterViewInit {
   }
 
   getUserData() {
-    // Obtener el ID del usuario desde sessionStorage o localStorage, como sea necesario
+    // Get the ID of the user from sessionStorage
     // const userId = sessionStorage.getItem('id');
     const userId = '65ed2051fe0962e8b1f5641c';
     if (userId) {
       this.userService.getUserRecords(userId).subscribe(
         (response: any) => {
-          // Aquí puedes hacer lo que necesites con los datos del usuario
           console.log('Datos del usuario:', response.record);
 
           if (response.record) {
@@ -159,21 +160,20 @@ export class PicTextComponent implements AfterViewInit {
   }
 
   updateRecordData(recordHistory: Array<{ image: string, text: string }>) {
-    // Limpiar el array RECORD_DATA antes de agregar los nuevos datos del historial del usuario
+    // Cleans de dataset to add the new elements
     RECORD_DATA.length = 0;
     console.log('Entre a la funcion')
   
-    // Iterar sobre el historial del usuario y agregar cada entrada a RECORD_DATA
+    // Iterate the record of the user and add each entry
     recordHistory.forEach((record, index) => {
       RECORD_DATA.push({
-        position: index + 1, // Asegúrate de asignar la posición correcta basada en el índice
+        position: index + 1, 
         image: record.image,
         text: record.text
       });
       console.log('He añadido un elemento')
     });
   
-    // Actualizar la fuente de datos de la tabla
     this.dataSource.data = RECORD_DATA;
   }
 }

@@ -128,6 +128,13 @@ table {
 	width: 100%;
 }
 
+.truncate {
+	max-width: 200px; 
+	white-space: nowrap; 
+	overflow: hidden; 
+	text-overflow: ellipsis; /
+  }
+
 footer {
 	position: sticky;
 	bottom: 0;
