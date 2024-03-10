@@ -3,10 +3,11 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-interface LoginResponse {
+export interface LoginResponse {
   user:{
+		id: number;
 		name: string;
-  	email: string;
+  		email: string;
 	}
 	// Agrega otras propiedades si es necesario
 }
@@ -20,7 +21,8 @@ export class UserService {
 		// This service can now make HTTP requests via `this.http`.
 	}
 
-	saveData(name: string, email: string) {
+	saveData(id: number, name: string, email: string) {
+	sessionStorage.setItem('id', id.toString());
     sessionStorage.setItem('name', name);
     sessionStorage.setItem('email', email);
   }
@@ -35,7 +37,7 @@ export class UserService {
 				console.log('Response status:', res.status);
 				console.log('Body:', res.body);
 
-			(res.body?.user.name) ? this.saveData(res.body?.user.name, res.body?.user.email):null
+			(res.body?.user.name) ? this.saveData(res.body?.user.id, res.body?.user.name, res.body?.user.email):null
 			});
 			return "success"
 		} catch (e) {
@@ -64,6 +66,8 @@ export class UserService {
 
 	}
 
-	
+	getUserRecords(id: string) : Observable<LoginResponse> {
+		return this.http.get<LoginResponse>(`${this.backendUrl}/one/:${id}`);
+	} 
 
 }

@@ -1,9 +1,10 @@
-import { Component, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, inject} from '@angular/core';
 import {PDFDocument, rgb} from 'pdf-lib'
 import { FormsModule } from '@angular/forms'; // Importa FormsModule
 import { CommonModule } from '@angular/common'; // Importa CommonModule
 import {MatTableModule,MatTableDataSource} from '@angular/material/table';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import { UserService, LoginResponse } from '../user.service';
 
 @Component({
   selector: 'app-pic-text',
@@ -21,7 +22,10 @@ export class PicTextComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+    this.getUserData();
   }
+
+  userService = inject(UserService)
 
   textImput: string = '';
 
@@ -120,6 +124,25 @@ export class PicTextComponent implements AfterViewInit {
 
   showText() {
     console.log('Texto ingresado:', this.textImput);
+  }
+
+  getUserData() {
+    // Obtener el ID del usuario desde sessionStorage o localStorage, como sea necesario
+    // const userId = sessionStorage.getItem('id');
+    const userId = '1';
+    if (userId) {
+      this.userService.getUserRecords(userId).subscribe(
+        (response: LoginResponse) => {
+          // Aquí puedes hacer lo que necesites con los datos del usuario
+          console.log('Datos del usuario:', response.user);
+        },
+        error => {
+          console.error('Error al obtener los datos del usuario:', error);
+        }
+      );
+    } else {
+      console.error('ID de usuario no encontrado en el almacenamiento.');
+    }
   }
 }
 
