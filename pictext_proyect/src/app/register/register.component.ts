@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../user.service';
 
@@ -12,6 +12,9 @@ import { UserService } from '../user.service';
 })
 export class RegisterComponent {
 	userService = inject(UserService)
+	info:string|null = null;
+
+	constructor(private router: Router) { }
 
 	applyForm = new FormGroup({
 		name: new FormControl(''),
@@ -19,12 +22,18 @@ export class RegisterComponent {
 		password: new FormControl(''),
 	});
 
-	submitRegister() {
+	submitRegister(){
 		this.userService.register( 
 			this.applyForm.value.name??'',
 			this.applyForm.value.email??'',
 			this.applyForm.value.password??''
-		);
+		).then((response) => {
+			if(response == "success"){
+				this.router.navigate(['/login']);
+			}else{
+				this.info = "Error registering"
+			}
+		});
 	}
 }
 

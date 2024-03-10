@@ -20,7 +20,9 @@
 	<p>¿Ya tienes una cuenta? <a routerLink="/login">Inicia sesion</a></p>
 </section>
 
-
+@if(info == "Error registering"){
+	<p>{{info}}</p>
+}
 <footer>
 	<p>© 2024 - Made by Maria C. Jaramillo, Andres F. Velasco, J. Sebastian Roncancio, Cesar Augusto Velasquez </p>
 </footer>
