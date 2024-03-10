@@ -8,7 +8,6 @@ export interface LoginResponse {
 		id: string;
 		name: string;
   		email: string;
-		//record: Array<string>;
 	}
 	// Agrega otras propiedades si es necesario
 }
@@ -26,7 +25,6 @@ export class UserService {
 	sessionStorage.setItem('id', id);
     sessionStorage.setItem('name', name);
     sessionStorage.setItem('email', email);
-	//sessionStorage.setItem('record', JSON.stringify(record));
   }
 
 	async login(email: string, password: string): Promise<string> {
@@ -40,7 +38,6 @@ export class UserService {
 				console.log('Body:', res.body);
 
 			(res.body?.user.name) ? this.saveData(res.body?.user.id, res.body?.user.name, res.body?.user.email):null
-			//,res.body?.user.record
 			});
 			return "success"
 		} catch (e) {
@@ -69,8 +66,8 @@ export class UserService {
 
 	}
 
-	getUserRecords(id: string) : Observable<LoginResponse> {
-		return this.http.get<LoginResponse>(`${this.backendUrl}/one/:${id}`);
-	} 
+	getUserRecords(id: string) {
+		return this.http.get(`${this.backendUrl}/one/${id}`)
+	}
 
 }

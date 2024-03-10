@@ -1,9 +1,9 @@
-import { Component, AfterViewInit, ViewChild, inject} from '@angular/core';
+import { Component, AfterViewInit, inject} from '@angular/core';
 import {PDFDocument, rgb} from 'pdf-lib'
 import { FormsModule } from '@angular/forms'; // Importa FormsModule
 import { CommonModule } from '@angular/common'; // Importa CommonModule
 import {MatTableModule,MatTableDataSource} from '@angular/material/table';
-import { UserService, LoginResponse } from '../user.service';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-pic-text',
@@ -12,6 +12,7 @@ import { UserService, LoginResponse } from '../user.service';
   templateUrl: './pic-text.component.html',
   styleUrl: './pic-text.component.css'
 })
+
 export class PicTextComponent implements AfterViewInit {
 
   displayedColumns: string[] = ['position', 'image', 'text'];
@@ -132,8 +133,12 @@ export class PicTextComponent implements AfterViewInit {
           // Aquí puedes hacer lo que necesites con los datos del usuario
           console.log('Datos del usuario:', response.record);
 
-          if (response.record && response.record.length > 0) {
-            this.updateRecordData(response.record);
+          if (response.record) {
+            if(response.record.length == 0){
+
+            }else{
+              this.updateRecordData(response.record);
+            }
           }
         },
         error => {
@@ -172,5 +177,5 @@ export interface recordElement {
 }
 
 const RECORD_DATA: recordElement[] = [
-  {position: 1, image: 'ejemplo', text: 'Este es un ejemplo'},
+  
 ];
