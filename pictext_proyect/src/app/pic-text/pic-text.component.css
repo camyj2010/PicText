@@ -132,7 +132,7 @@ table {
 	max-width: 200px; 
 	white-space: nowrap; 
 	overflow: hidden; 
-	text-overflow: ellipsis; /
+	text-overflow: ellipsis; 
   }
 
 footer {
@@ -170,6 +170,10 @@ footer p {
 		margin: 0 auto;
 		justify-content: space-around;
 		align-items: center;
+	}
+
+	.truncate {
+		max-width: 40%;
 	}
 
 	footer {

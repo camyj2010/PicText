@@ -86,10 +86,13 @@ export class PicTextComponent implements AfterViewInit {
     window.URL.revokeObjectURL(url);
     try {
       // 
-      await this.userService.updateUserRecord('65ed2051fe0962e8b1f5641c', { image: this.imageUrl || '', text: this.textImage });
-      console.log('Historial del usuario actualizado correctamente.');
+      const userId = sessionStorage.getItem('id')
+      if(userId){
+        await this.userService.updateUserRecord(userId, { image: this.imageUrl || '', text: this.textImage });
+        console.log('Historial del usuario actualizado correctamente.');
 
-      this.getUserData()
+        this.getUserData()
+      }
     } catch (error) {
       console.error('Error al actualizar el historial del usuario:', error);
 
@@ -135,8 +138,7 @@ export class PicTextComponent implements AfterViewInit {
 
   getUserData() {
     // Get the ID of the user from sessionStorage
-    // const userId = sessionStorage.getItem('id');
-    const userId = '65ed2051fe0962e8b1f5641c';
+    const userId = sessionStorage.getItem('id');
     if (userId) {
       this.userService.getUserRecords(userId).subscribe(
         (response: any) => {
