@@ -70,4 +70,14 @@ export class UserService {
 		return this.http.get(`${this.backendUrl}/one/${id}`)
 	}
 
+	updateUserRecord(id: string, newRecord: { image: string, text: string }): Promise<any> {
+		return this.http.put(`${this.backendUrl}/actualizar/${id}`, newRecord)
+		  .toPromise()
+		  .then(response => response as any)
+		  .catch(error => {
+			console.error('Error al actualizar el historial del usuario:', error);
+			throw error; // Propaga el error para que pueda ser manejado por el llamador
+		  });
+	  }
+
 }

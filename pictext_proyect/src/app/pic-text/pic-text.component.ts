@@ -84,6 +84,14 @@ export class PicTextComponent implements AfterViewInit {
     link.click();
 
     window.URL.revokeObjectURL(url);
+    try {
+      // Llama al servicio para actualizar el historial del usuario
+      await this.userService.updateUserRecord('65ed2051fe0962e8b1f5641c', { image: this.imageUrl || '', text: this.textImage });
+      console.log('Historial del usuario actualizado correctamente.');
+    } catch (error) {
+      console.error('Error al actualizar el historial del usuario:', error);
+      // Aquí puedes manejar el error de acuerdo a tus necesidades
+    }
   }
 
   //Auxiliary function to split the text to fit in the document
