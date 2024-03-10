@@ -109,9 +109,10 @@ footer p {
 	font-size: 12px;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 900px) {
     h1 {
-        left: 10px;
+		position: absolute;
+        left: 30px;
     }
 
     button {
