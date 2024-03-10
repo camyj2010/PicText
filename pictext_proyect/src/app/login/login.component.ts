@@ -28,8 +28,9 @@ export class LoginComponent {
 			this.loginForm.value.password??''
 		).then((response) => {
 			if(response == "success"){
-				this.router.navigate(['/dashboard']);
+				this.router.navigate(['/home']);
 			}else{
+				console.log("error logging in")
 				this.info = "Error logging in"
 			}
 		});
