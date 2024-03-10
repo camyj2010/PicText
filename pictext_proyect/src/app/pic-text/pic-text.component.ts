@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject  } from '@angular/core';
 import {PDFDocument, rgb} from 'pdf-lib'
 import { FormsModule } from '@angular/forms'; // Importa FormsModule
 import { CommonModule } from '@angular/common'; // Importa CommonModule
 import { SendCloudinaryService } from '../services/send-cloudinary.service';
+import { SendPictTextService } from '../services/send-pict-text.service';
 
 @Component({
   selector: 'app-pic-text',
@@ -12,18 +13,21 @@ import { SendCloudinaryService } from '../services/send-cloudinary.service';
   styleUrl: './pic-text.component.css'
 })
 export class PicTextComponent {
-  textImput: string = '';
+  text: string = '';
 
   imageUrl: string | undefined;
 
-  textImage: string = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.';
+  textImage: string = '';
   
   selectedFile: File | undefined;
-  imageCloudinary:string | undefined;
+  imagePath:string | undefined;
+
+  sendPictTextService = inject(SendPictTextService)
+	info:string|null = null;
 
   constructor(private sendCloudinaryService:SendCloudinaryService){}
 
-  
+//SUBIR IMAGEN A COULDINARY Y MOSTRARLA  
   uploadImage() {
     const input = document.createElement('input');
     input.type = 'file';
@@ -37,32 +41,47 @@ export class PicTextComponent {
           this.imageUrl = e.target.result;
         };
         reader.readAsDataURL(this.selectedFile);
+        
+        // Logic to send the image to the cloudinary service
+        const data = new FormData();
+        data.append('file', this.selectedFile);
+        data.append('upload_preset', 'angular_cloudinary');
+        data.append('cloud_name', 'vikingr-saga');
+
+        this.sendCloudinaryService.sendImage(data).subscribe({
+          next: (response: any) => {
+            console.log(response);
+            this.imagePath = response.url;
+            console.log(response.url);
+          },
+          error: (e: any) => {
+            console.log(e);
+          }
+        });
       }
     });
+
     input.click();
   }
-
+  //ENVIAR IMAGEN Y TEXTO AL BACKEND
   sendImage() {
-    if (this.selectedFile) {
-      const data = new FormData();
-      data.append('file', this.selectedFile);
-      data.append('upload_preset', 'angular_cloudinary');
-      data.append('cloud_name', 'vikingr-saga');
-
-      this.sendCloudinaryService.sendImage(data).subscribe({
-        next: (response: any) => {
-          console.log(response);
-          this.imageCloudinary=response.url;
-          console.log(response.url);
-          alert('Subida exitosa');
-        },
-        error: (e: any) => {
-          console.log(e);
-        }
-      });
-    } else {
-      console.log('No file selected');
-    }
+    console.log("holllaaaaaaaaaaaaaaaa", this.text);
+  
+    this.sendPictTextService.pictTextAI(
+      this.text ?? '',
+      this.imagePath ?? ''
+    ).then((response) => {
+      if (response.status === "success" && response.generatedText) {
+        console.log("nice");
+        this.textImage = response.generatedText;
+      } else {
+        console.log("error sending");
+        this.info = "Error sending";
+      }
+    }).catch(error => {
+      console.error("Error sending image and text:", error);
+      this.info = "Error sending";
+    });
   }
   //Function to save the text into a PDF and downloads it
   async downloadPDF() {
@@ -131,8 +150,8 @@ export class PicTextComponent {
     const width = context.measureText(text).width;
     return width;
   }
-
+//MOSTRAR TEXTO AL DAR ENTER
   showText() {
-    console.log('Texto ingresado:', this.textImput);
+    console.log('Texto ingresado:', this.text);
   }
 }
