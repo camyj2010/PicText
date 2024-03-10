@@ -90,6 +90,12 @@ button {
 	background-color: #F87A34;
 }
 
+.upcoming {
+	padding-top: 15px;
+	border-radius: 0.25rem;
+	background-color: #016dd3;
+}
+
 .card:hover {
 	transform: scale(1.01);
 	box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);

@@ -1,9 +1,14 @@
 <header>
 	<h1>AI-Tools</h1>
-	<nav>
+	@if(getData()){
+		<h3>{{getData()}}</h3>
+		<button class="login" (click)="deleteData()">Iniciar Sesión</button>
+	}@else {
+		<nav>
 		<button class="login" (click)="handleLogin()">Iniciar Sesión</button>
 		<button class="register" (click)="handleRegister()">Registrarse</button>
 	</nav>
+	}
 </header>
 <section class="aboutUs">
 	<h2>¿Qué es AI-Tools?</h2>
@@ -18,29 +23,26 @@
 			<div class="cardImage">
 				<img src="assets/picText.png" alt="Imagen de texto">
 			</div>
-			<p>1 Puedes subir una imagen y obtener el texto que contiene. Además, puedes descargar el resultado en un archivo
+			<p>Puedes subir una imagen y obtener el texto que contiene. Además, puedes descargar el resultado en un archivo
 				PDF.</p>
 		</a>
-		<a routerLink="/home" class="card pictext">
-			<div class="cardImage">
-				<img src="assets/picText.png" alt="Imagen de texto">
+		<a routerLink="/home" class="card">
+			<div class="cardImage upcoming">
+				<img src="assets/comming.png" alt="Imagen de texto">
 			</div>
-			<p>1 Puedes subir una imagen y obtener el texto que contiene. Además, puedes descargar el resultado en un archivo
-				PDF.</p>
+			<p>Proximamente</p>
 		</a>
-		<a routerLink="/home" class="card pictext">
-			<div class="cardImage">
-				<img src="assets/picText.png" alt="Imagen de texto">
+		<a routerLink="/home" class="card ">
+			<div class="cardImage upcoming">
+				<img src="assets/comming.png" alt="Imagen de texto">
 			</div>
-			<p>1 Puedes subir una imagen y obtener el texto que contiene. Además, puedes descargar el resultado en un archivo
-				PDF.</p>
+			<p>Proximamente</p>
 		</a>
-		<a routerLink="/home" class="card pictext">
-			<div class="cardImage">
-				<img src="assets/picText.png" alt="Imagen de texto">
+		<a routerLink="/home" class="card ">
+			<div class="cardImage upcoming">
+				<img src="assets/comming.png" alt="Imagen de texto">
 			</div>
-			<p>1 Puedes subir una imagen y obtener el texto que contiene. Además, puedes descargar el resultado en un archivo
-				PDF.</p>
+			<p>Proximamente</p>
 		</a>
 	</div>
 </section>
