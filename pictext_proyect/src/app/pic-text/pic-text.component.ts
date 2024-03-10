@@ -129,12 +129,16 @@ export class PicTextComponent implements AfterViewInit {
   getUserData() {
     // Obtener el ID del usuario desde sessionStorage o localStorage, como sea necesario
     // const userId = sessionStorage.getItem('id');
-    const userId = '1';
+    const userId = '65ed2051fe0962e8b1f5641c';
     if (userId) {
       this.userService.getUserRecords(userId).subscribe(
-        (response: LoginResponse) => {
+        (response: any) => {
           // Aquí puedes hacer lo que necesites con los datos del usuario
-          console.log('Datos del usuario:', response.user);
+          console.log('Datos del usuario:', response.record);
+
+          if (response.record && response.record.length > 0) {
+            this.updateRecordData(response.record);
+          }
         },
         error => {
           console.error('Error al obtener los datos del usuario:', error);
@@ -143,6 +147,23 @@ export class PicTextComponent implements AfterViewInit {
     } else {
       console.error('ID de usuario no encontrado en el almacenamiento.');
     }
+  }
+
+  updateRecordData(recordHistory: Array<{ image: string, text: string }>) {
+    // Limpiar el array RECORD_DATA antes de agregar los nuevos datos del historial del usuario
+    RECORD_DATA.length = 0;
+  
+    // Iterar sobre el historial del usuario y agregar cada entrada a RECORD_DATA
+    recordHistory.forEach((record, index) => {
+      RECORD_DATA.push({
+        position: index + 1, // Asegúrate de asignar la posición correcta basada en el índice
+        image: record.image,
+        text: record.text
+      });
+    });
+  
+    // Actualizar la fuente de datos de la tabla
+    this.dataSource.data = RECORD_DATA;
   }
 }
 

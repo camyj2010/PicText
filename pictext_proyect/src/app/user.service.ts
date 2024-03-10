@@ -5,9 +5,10 @@ import { map } from 'rxjs/operators';
 
 export interface LoginResponse {
   user:{
-		id: number;
+		id: string;
 		name: string;
   		email: string;
+		//record: Array<string>;
 	}
 	// Agrega otras propiedades si es necesario
 }
@@ -21,10 +22,11 @@ export class UserService {
 		// This service can now make HTTP requests via `this.http`.
 	}
 
-	saveData(id: number, name: string, email: string) {
-	sessionStorage.setItem('id', id.toString());
+	saveData(id: string, name: string, email: string) {
+	sessionStorage.setItem('id', id);
     sessionStorage.setItem('name', name);
     sessionStorage.setItem('email', email);
+	//sessionStorage.setItem('record', JSON.stringify(record));
   }
 
 	async login(email: string, password: string): Promise<string> {
@@ -38,6 +40,7 @@ export class UserService {
 				console.log('Body:', res.body);
 
 			(res.body?.user.name) ? this.saveData(res.body?.user.id, res.body?.user.name, res.body?.user.email):null
+			//,res.body?.user.record
 			});
 			return "success"
 		} catch (e) {
