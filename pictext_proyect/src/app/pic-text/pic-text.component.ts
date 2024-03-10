@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {PDFDocument, rgb} from 'pdf-lib'
 import { FormsModule } from '@angular/forms'; // Importa FormsModule
 import { CommonModule } from '@angular/common'; // Importa CommonModule
+import { SendCloudinaryService } from '../services/send-cloudinary.service';
 
 @Component({
   selector: 'app-pic-text',
@@ -11,33 +12,58 @@ import { CommonModule } from '@angular/common'; // Importa CommonModule
   styleUrl: './pic-text.component.css'
 })
 export class PicTextComponent {
-textImput: string = '';
+  textImput: string = '';
 
   imageUrl: string | undefined;
 
   textImage: string = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.';
+  
+  selectedFile: File | undefined;
+  imageCloudinary:string | undefined;
 
-  //Function to upload the image to the page
+  constructor(private sendCloudinaryService:SendCloudinaryService){}
+
+  
   uploadImage() {
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'image/*';
     input.addEventListener('change', (event: any) => {
-      const file = event.target.files[0];
-      if (file) {
-        console.log('File selected:', file);
-        // Logic to load the image on the box
-
+      this.selectedFile = event.target.files[0]; // Store the selected file
+      if (this.selectedFile) {
+        console.log('File selected:', this.selectedFile);
         const reader = new FileReader();
         reader.onload = (e: any) => {
           this.imageUrl = e.target.result;
         };
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(this.selectedFile);
       }
     });
     input.click();
   }
 
+  sendImage() {
+    if (this.selectedFile) {
+      const data = new FormData();
+      data.append('file', this.selectedFile);
+      data.append('upload_preset', 'angular_cloudinary');
+      data.append('cloud_name', 'vikingr-saga');
+
+      this.sendCloudinaryService.sendImage(data).subscribe({
+        next: (response: any) => {
+          console.log(response);
+          this.imageCloudinary=response.url;
+          console.log(response.url);
+          alert('Subida exitosa');
+        },
+        error: (e: any) => {
+          console.log(e);
+        }
+      });
+    } else {
+      console.log('No file selected');
+    }
+  }
   //Function to save the text into a PDF and downloads it
   async downloadPDF() {
     const pdfDoc = await PDFDocument.create();
