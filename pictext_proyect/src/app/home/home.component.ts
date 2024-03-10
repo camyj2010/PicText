@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-home',
@@ -9,8 +10,17 @@ import { RouterLink, Router } from '@angular/router';
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
+	userService = inject(UserService)
 
 	constructor(private router: Router) { }
+
+	getData() {
+    return sessionStorage.getItem('name');
+  }
+
+	deleteData() {
+    sessionStorage.clear();
+  }
 
 	handleLogin(){
 		this.router.navigate(['/login']);

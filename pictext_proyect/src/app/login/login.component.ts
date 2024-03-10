@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router'
+import { Component, inject } from '@angular/core';
+import { RouterLink, Router } from '@angular/router'
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-login',
@@ -11,10 +12,29 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 })
 export class LoginComponent {
 
+	userService = inject(UserService)
+	info:string|null = null;
+
+	constructor(private router: Router) { }
+
   loginForm = new FormGroup({
 		email: new FormControl(''),
 		password: new FormControl(''),
 	});
+
+	submitLogin(){
+		this.userService.login( 
+			this.loginForm.value.email??'',
+			this.loginForm.value.password??''
+		).then((response) => {
+			if(response == "success"){
+				this.router.navigate(['/home']);
+			}else{
+				console.log("error logging in")
+				this.info = "Error logging in"
+			}
+		});
+	}
 
 
 }
