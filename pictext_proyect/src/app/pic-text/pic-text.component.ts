@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, inject} from '@angular/core';
+import { Component, AfterViewInit, inject, PLATFORM_ID, Inject} from '@angular/core';
 import {PDFDocument, rgb} from 'pdf-lib'
 import { FormsModule } from '@angular/forms'; // Importa FormsModule
 import { CommonModule } from '@angular/common'; // Importa CommonModule
@@ -7,6 +7,7 @@ import { UserService } from '../user.service';
 import { SendCloudinaryService } from '../services/send-cloudinary.service';
 import { SendPictTextService } from '../services/send-pict-text.service';
 import { RouterLink } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-pic-text',
@@ -18,14 +19,14 @@ import { RouterLink } from '@angular/router';
 
 export class PicTextComponent implements AfterViewInit {
 
+  userService = inject(UserService)
+
   displayedColumns: string[] = ['position', 'image', 'text'];
   dataSource = new MatTableDataSource<recordElement>(RECORD_DATA);
 
   ngAfterViewInit() {
     this.getUserData();
   }
-
-  userService = inject(UserService)
 
   textImput: string = '';
   
@@ -41,7 +42,10 @@ export class PicTextComponent implements AfterViewInit {
   sendPictTextService = inject(SendPictTextService)
 	info:string|null = null;
 
-  constructor(private sendCloudinaryService:SendCloudinaryService){}
+  constructor(
+    private sendCloudinaryService:SendCloudinaryService,
+    @Inject(PLATFORM_ID) private platformId: Object	
+    ){}
 
 //SUBIR IMAGEN A COULDINARY Y MOSTRARLA  
   uploadImage() {
@@ -132,13 +136,14 @@ export class PicTextComponent implements AfterViewInit {
 
     window.URL.revokeObjectURL(url);
     try {
-      // 
-      const userId = sessionStorage.getItem('id')
-      if(userId){
-        await this.userService.updateUserRecord(userId, { image: this.imageUrl || '', text: this.textImage });
-        console.log('Historial del usuario actualizado correctamente.');
-
-        this.getUserData()
+      if(isPlatformBrowser(this.platformId)){
+        const userId = sessionStorage.getItem('id')
+        if(userId){
+          await this.userService.updateUserRecord(userId, { image: this.imagePath || '', text: this.text });
+          console.log('Historial del usuario actualizado correctamente.');
+  
+          this.getUserData()
+        }
       }
     } catch (error) {
       console.error('Error al actualizar el historial del usuario:', error);
@@ -185,24 +190,26 @@ export class PicTextComponent implements AfterViewInit {
 
   getUserData() {
     // Get the ID of the user from sessionStorage
-    const userId = sessionStorage.getItem('id');
-    if (userId) {
-      this.userService.getUserRecords(userId).subscribe(
-        (response: any) => {
-          console.log('Datos del usuario:', response.record);
+    if(isPlatformBrowser(this.platformId)){
+      const userId = sessionStorage.getItem('id');
+      if (userId) {
+        this.userService.getUserRecords(userId).subscribe(
+          (response: any) => {
+            console.log('Datos del usuario:', response.record);
 
-          if (response.record) {
-            if(response.record.length == 0){
+            if (response.record) {
+              if(response.record.length == 0){
 
-            }else{
-              this.updateRecordData(response.record);
+              }else{
+                this.updateRecordData(response.record);
+              }
             }
+          },
+          error => {
+            console.error('Error al obtener los datos del usuario:', error);
           }
-        },
-        error => {
-          console.error('Error al obtener los datos del usuario:', error);
-        }
-      );
+        );
+      }
     } else {
       console.error('ID de usuario no encontrado en el almacenamiento.');
     }
