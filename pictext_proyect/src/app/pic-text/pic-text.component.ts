@@ -4,11 +4,12 @@ import { FormsModule } from '@angular/forms'; // Importa FormsModule
 import { CommonModule } from '@angular/common'; // Importa CommonModule
 import { SendCloudinaryService } from '../services/send-cloudinary.service';
 import { SendPictTextService } from '../services/send-pict-text.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-pic-text',
   standalone: true,
-  imports: [ CommonModule, FormsModule],
+  imports: [ CommonModule, FormsModule, RouterLink],
   templateUrl: './pic-text.component.html',
   styleUrl: './pic-text.component.css'
 })
