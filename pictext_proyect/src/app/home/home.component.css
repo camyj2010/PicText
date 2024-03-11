@@ -21,6 +21,18 @@ button {
 	cursor: pointer;
 }
 
+.userInfo{
+	position: absolute;
+	right: 20px;
+	top: 10px;
+	display: flex;
+	align-items: center;
+}
+
+.userName {
+	margin-right: 10px;
+}
+
 .login {
     margin-right: 20px;
 	background-color: #F87A34;
@@ -141,5 +153,11 @@ footer p {
 @media (max-width: 550px) {
 	.services {
 		width: 90%;
+	}
+	h1{
+		font-size: 1.5rem;
+	}
+	.userInfo {
+		flex-direction: column;
 	}
 }

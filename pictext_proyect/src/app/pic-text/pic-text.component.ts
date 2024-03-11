@@ -6,11 +6,12 @@ import {MatTableModule,MatTableDataSource} from '@angular/material/table';
 import { UserService } from '../user.service';
 import { SendCloudinaryService } from '../services/send-cloudinary.service';
 import { SendPictTextService } from '../services/send-pict-text.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-pic-text',
   standalone: true,
-  imports: [ CommonModule, FormsModule, MatTableModule],
+  imports: [ CommonModule, FormsModule, MatTableModule, RouterLink],
   templateUrl: './pic-text.component.html',
   styleUrl: './pic-text.component.css'
 })

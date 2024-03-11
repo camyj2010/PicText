@@ -3,6 +3,28 @@ body {
 	height: 100%;
 	margin: 0;
 }
+
+.homeLink {
+	position: absolute;
+	display: flex;
+	width: 30px;
+	height: 30px;
+	align-items: center;
+	justify-content: center;
+	left: 30px;
+	top: 30px;
+	text-decoration: none;
+	background-color: rgb(220, 214, 226);
+	border-radius: 50px;
+	transition: 0.3s;
+}
+
+.homeLink:hover {
+	background-color: rgb(200, 200, 200);
+	transform: scale(1.1);
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
 .inputPromt {
 	position: relative;
 	max-width: 60%;

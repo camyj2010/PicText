@@ -1,10 +1,12 @@
 <header>
 	<h1>AI-Tools</h1>
 	@if(getData()){
-		<h3>{{getData()}}</h3>
-		<button class="login" (click)="deleteData()">Iniciar Sesión</button>
+	<div class="userInfo">
+		<h3 class="userName">{{getData()}}</h3>
+		<button class="logout" (click)="deleteData()">Cerrar Sesión</button>
+	</div>
 	}@else {
-		<nav>
+	<nav>
 		<button class="login" (click)="handleLogin()">Iniciar Sesión</button>
 		<button class="register" (click)="handleRegister()">Registrarse</button>
 	</nav>
