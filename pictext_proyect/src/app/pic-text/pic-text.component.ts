@@ -1,18 +1,33 @@
-import { Component, inject  } from '@angular/core';
+import { Component, AfterViewInit, inject} from '@angular/core';
 import {PDFDocument, rgb} from 'pdf-lib'
 import { FormsModule } from '@angular/forms'; // Importa FormsModule
 import { CommonModule } from '@angular/common'; // Importa CommonModule
+import {MatTableModule,MatTableDataSource} from '@angular/material/table';
+import { UserService } from '../user.service';
 import { SendCloudinaryService } from '../services/send-cloudinary.service';
 import { SendPictTextService } from '../services/send-pict-text.service';
 
 @Component({
   selector: 'app-pic-text',
   standalone: true,
-  imports: [ CommonModule, FormsModule],
+  imports: [ CommonModule, FormsModule, MatTableModule],
   templateUrl: './pic-text.component.html',
   styleUrl: './pic-text.component.css'
 })
-export class PicTextComponent {
+
+export class PicTextComponent implements AfterViewInit {
+
+  displayedColumns: string[] = ['position', 'image', 'text'];
+  dataSource = new MatTableDataSource<recordElement>(RECORD_DATA);
+
+  ngAfterViewInit() {
+    this.getUserData();
+  }
+
+  userService = inject(UserService)
+
+  textImput: string = '';
+  
   text: string = '';
 
   imageUrl: string | undefined;
@@ -116,6 +131,19 @@ export class PicTextComponent {
     link.click();
 
     window.URL.revokeObjectURL(url);
+    try {
+      // 
+      const userId = sessionStorage.getItem('id')
+      if(userId){
+        await this.userService.updateUserRecord(userId, { image: this.imageUrl || '', text: this.textImage });
+        console.log('Historial del usuario actualizado correctamente.');
+
+        this.getUserData()
+      }
+    } catch (error) {
+      console.error('Error al actualizar el historial del usuario:', error);
+
+    }
   }
 
   //Auxiliary function to split the text to fit in the document
@@ -154,4 +182,57 @@ export class PicTextComponent {
   showText() {
     console.log('Texto ingresado:', this.text);
   }
+
+  getUserData() {
+    // Get the ID of the user from sessionStorage
+    const userId = sessionStorage.getItem('id');
+    if (userId) {
+      this.userService.getUserRecords(userId).subscribe(
+        (response: any) => {
+          console.log('Datos del usuario:', response.record);
+
+          if (response.record) {
+            if(response.record.length == 0){
+
+            }else{
+              this.updateRecordData(response.record);
+            }
+          }
+        },
+        error => {
+          console.error('Error al obtener los datos del usuario:', error);
+        }
+      );
+    } else {
+      console.error('ID de usuario no encontrado en el almacenamiento.');
+    }
+  }
+
+  updateRecordData(recordHistory: Array<{ image: string, text: string }>) {
+    // Cleans de dataset to add the new elements
+    RECORD_DATA.length = 0;
+    console.log('Entre a la funcion')
+  
+    // Iterate the record of the user and add each entry
+    recordHistory.forEach((record, index) => {
+      RECORD_DATA.push({
+        position: index + 1, 
+        image: record.image,
+        text: record.text
+      });
+      console.log('He añadido un elemento')
+    });
+  
+    this.dataSource.data = RECORD_DATA;
+  }
 }
+
+export interface recordElement {
+  position: number;
+  image: string;
+  text: string;
+}
+
+const RECORD_DATA: recordElement[] = [
+  
+];
