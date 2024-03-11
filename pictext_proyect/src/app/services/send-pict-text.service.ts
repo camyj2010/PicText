@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class SendPictTextService {
-  backendUrl = 'http://localhost:3001';
+  backendUrl = 'https://pic-text-backend.vercel.app';
   
   constructor(private http: HttpClient) {}
 

@@ -81,7 +81,6 @@ export class PicTextComponent implements AfterViewInit {
   }
   //ENVIAR IMAGEN Y TEXTO AL BACKEND
   sendImage() {
-    console.log("holllaaaaaaaaaaaaaaaa", this.text);
   
     this.sendPictTextService.pictTextAI(
       this.text ?? '',
