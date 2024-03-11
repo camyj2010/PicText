@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms'; // Importa FormsModule
 import { CommonModule } from '@angular/common'; // Importa CommonModule
 import {MatTableModule,MatTableDataSource} from '@angular/material/table';
 import { UserService } from '../user.service';
+import { SendCloudinaryService } from '../services/send-cloudinary.service';
+import { SendPictTextService } from '../services/send-pict-text.service';
 
 @Component({
   selector: 'app-pic-text',
@@ -25,32 +27,77 @@ export class PicTextComponent implements AfterViewInit {
   userService = inject(UserService)
 
   textImput: string = '';
+  
+  text: string = '';
 
   imageUrl: string | undefined;
 
-  textImage: string = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis, justo nec aliquam aliquet, nunc nunc tincidunt nunc, nec aliquam nunc nunc nec.';
+  textImage: string = '';
+  
+  selectedFile: File | undefined;
+  imagePath:string | undefined;
 
-  //Function to upload the image to the page
+  sendPictTextService = inject(SendPictTextService)
+	info:string|null = null;
+
+  constructor(private sendCloudinaryService:SendCloudinaryService){}
+
+//SUBIR IMAGEN A COULDINARY Y MOSTRARLA  
   uploadImage() {
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'image/*';
     input.addEventListener('change', (event: any) => {
-      const file = event.target.files[0];
-      if (file) {
-        console.log('File selected:', file);
-        // Logic to load the image on the box
-
+      this.selectedFile = event.target.files[0]; // Store the selected file
+      if (this.selectedFile) {
+        console.log('File selected:', this.selectedFile);
         const reader = new FileReader();
         reader.onload = (e: any) => {
           this.imageUrl = e.target.result;
         };
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(this.selectedFile);
+        
+        // Logic to send the image to the cloudinary service
+        const data = new FormData();
+        data.append('file', this.selectedFile);
+        data.append('upload_preset', 'angular_cloudinary');
+        data.append('cloud_name', 'vikingr-saga');
+
+        this.sendCloudinaryService.sendImage(data).subscribe({
+          next: (response: any) => {
+            console.log(response);
+            this.imagePath = response.url;
+            console.log(response.url);
+          },
+          error: (e: any) => {
+            console.log(e);
+          }
+        });
       }
     });
+
     input.click();
   }
-
+  //ENVIAR IMAGEN Y TEXTO AL BACKEND
+  sendImage() {
+    console.log("holllaaaaaaaaaaaaaaaa", this.text);
+  
+    this.sendPictTextService.pictTextAI(
+      this.text ?? '',
+      this.imagePath ?? ''
+    ).then((response) => {
+      if (response.status === "success" && response.generatedText) {
+        console.log("nice");
+        this.textImage = response.generatedText;
+      } else {
+        console.log("error sending");
+        this.info = "Error sending";
+      }
+    }).catch(error => {
+      console.error("Error sending image and text:", error);
+      this.info = "Error sending";
+    });
+  }
   //Function to save the text into a PDF and downloads it
   async downloadPDF() {
     const pdfDoc = await PDFDocument.create();
@@ -131,9 +178,9 @@ export class PicTextComponent implements AfterViewInit {
     const width = context.measureText(text).width;
     return width;
   }
-
+//MOSTRAR TEXTO AL DAR ENTER
   showText() {
-    console.log('Texto ingresado:', this.textImput);
+    console.log('Texto ingresado:', this.text);
   }
 
   getUserData() {

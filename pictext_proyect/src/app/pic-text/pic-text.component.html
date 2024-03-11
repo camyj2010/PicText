@@ -1,10 +1,11 @@
 <header>
 	<img src="assets/picText.png" alt="Logo" class="logo">
+	<div *ngIf="imageUrl && !imagePath" class="loader"></div>
 </header>
 <div class="inputPromt">
 	<p>¿Qué deseas hacer?</p>
 	<div class="text-input">
-		<input type="text" placeholder="Ingresa tu texto aquí" [(ngModel)]="textImput" (keyup.enter)="showText()">
+		<input type="text" placeholder="Ingresa tu texto aquí" [(ngModel)]="text" (onchange)="showText()">
 	</div>
 </div>
 <div class="centered">
@@ -37,8 +38,8 @@
 	</div>
 </div>
 <div class="centered">
-	@if(imageUrl){
-	<button class="raised-button">
+	@if(imagePath){
+	<button class="raised-button"(click)="sendImage()">
 		Submit
 	</button>
 	}@else{
@@ -46,6 +47,7 @@
 			Submit
 		</button>
 	}
+	
 </div>
 <div class="record">
 	<div>

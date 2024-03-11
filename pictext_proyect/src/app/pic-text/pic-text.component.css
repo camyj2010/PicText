@@ -180,4 +180,31 @@ footer p {
 		position: sticky;
 		font-size: 10px;
 	}
+	.loader {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.5); /* Color negro semi-transparente */
+		z-index: 9999; /* Asegura que el loader esté encima de todos los demás elementos */
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	
+	.loader::after {
+		content: "";
+		border: 2px solid #f3f3f3; /* Color de los bordes */
+		border-radius: 50%;
+		border-top: 2px solid #3498db; /* Color del borde superior (puedes cambiarlo al color que desees) */
+		width: 20px;
+		height: 20px;
+		animation: spin 1s linear infinite; /* Animación de rotación */
+	}
+	
+	@keyframes spin {
+		0% { transform: rotate(0deg); }
+		100% { transform: rotate(360deg); }
+	}
 }
