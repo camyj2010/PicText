@@ -139,7 +139,7 @@ export class PicTextComponent implements AfterViewInit {
       if(isPlatformBrowser(this.platformId)){
         const userId = sessionStorage.getItem('id')
         if(userId){
-          await this.userService.updateUserRecord(userId, { image: this.imagePath || '', text: this.text });
+          await this.userService.updateUserRecord(userId, { image: this.imagePath || '', text: this.textImage });
           console.log('Historial del usuario actualizado correctamente.');
   
           this.getUserData()
