@@ -36,6 +36,8 @@ export class PicTextComponent implements AfterViewInit {
 
   textImage: string = '';
   
+  textGenerating: boolean = false;
+
   selectedFile: File | undefined;
   imagePath:string | undefined;
 
@@ -85,7 +87,7 @@ export class PicTextComponent implements AfterViewInit {
   }
   //ENVIAR IMAGEN Y TEXTO AL BACKEND
   sendImage() {
-  
+    this.textGenerating = true;
     this.sendPictTextService.pictTextAI(
       this.text ?? '',
       this.imagePath ?? ''
@@ -93,13 +95,16 @@ export class PicTextComponent implements AfterViewInit {
       if (response.status === "success" && response.generatedText) {
         console.log("nice");
         this.textImage = response.generatedText;
+        this.textGenerating = false;
       } else {
         console.log("error sending");
         this.info = "Error sending";
+        this.textGenerating = false;
       }
     }).catch(error => {
       console.error("Error sending image and text:", error);
       this.info = "Error sending";
+      this.textGenerating = false;
     });
   }
   //Function to save the text into a PDF and downloads it
@@ -153,22 +158,27 @@ export class PicTextComponent implements AfterViewInit {
 
   //Auxiliary function to split the text to fit in the document
   splitText(text: string, maxWidth: number, fontSize: number): string[] {
-    const words = text.split(' ');
+    const words = text.split(/\s+/); // Dividir por espacios en blanco
     const lines = [];
-    let currentLine = words[0];
+    let currentLine = '';
   
-    for (let i = 1; i < words.length; i++) {
-      const word = words[i];
-      const width = this.getTextWidth(word, fontSize); // Obtain the width of the text
+    for (const word of words) {
+      const width = this.getTextWidth(currentLine + ' ' + word, fontSize);
   
-      if (this.getTextWidth(currentLine + ' ' + word, fontSize) < maxWidth) {
-        currentLine += ' ' + word;
+      if (width < maxWidth) {
+        // La palabra cabe en la línea actual
+        currentLine += (currentLine ? ' ' : '') + word;
       } else {
+        // La palabra no cabe en la línea actual, así que comenzamos una nueva línea
         lines.push(currentLine);
         currentLine = word;
       }
     }
-    lines.push(currentLine);
+  
+    if (currentLine) {
+      lines.push(currentLine);
+    }
+  
     return lines;
   }
   

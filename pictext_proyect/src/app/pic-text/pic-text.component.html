@@ -1,6 +1,6 @@
 <header>
 	<img src="assets/picText.png" alt="Logo" class="logo">
-	<div *ngIf="imageUrl && !imagePath" class="loader"></div>
+	<div *ngIf="imageUrl && !imagePath || textGenerating" class="loader"></div>
 </header>
 <a class="homeLink" routerLink="/home">
 	<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg>
@@ -21,7 +21,7 @@
 		<div class="empty-box"></div>
 		}
 		<button class="raised-button" (click)="uploadImage()">
-			Upload Image
+			Subir Imagen
 			<input type="file" style="display: none;" accept="image/*">
 		</button>
 	</div>
@@ -30,11 +30,11 @@
 		<div class="text-box"> {{textImage}} </div>
 		@if (textImage != '') {
 			<button class="raised-button" (click)="downloadPDF()">
-				Download PDF
+				Descargar PDF
 			</button>
 		}@else {
 			<button class="raised-button" disabled>
-				Download PDF
+				Descargar PDF
 			</button>
 		}
 		
@@ -43,11 +43,11 @@
 <div class="centered">
 	@if(imagePath){
 	<button class="raised-button"(click)="sendImage()">
-		Submit
+		Generar Texto
 	</button>
 	}@else{
 		<button class="raised-button" disabled>
-			Submit
+			Generar Texto
 		</button>
 	}
 	
@@ -63,11 +63,11 @@
 				<td mat-cell *matCellDef="let element"> {{element.position}} </td>
 			</ng-container>
 			<ng-container matColumnDef="image">
-				<th mat-header-cell *matHeaderCellDef> Image URL </th>
+				<th mat-header-cell *matHeaderCellDef> URL de la Imagen </th>
 				<td mat-cell *matCellDef="let element" class="truncate"> {{element.image}} </td>
 			</ng-container>
 			<ng-container matColumnDef="text">
-				<th mat-header-cell *matHeaderCellDef> Text Generated </th>
+				<th mat-header-cell *matHeaderCellDef> Texto Generado </th>
 				<td mat-cell *matCellDef="let element" class="truncate"> {{element.text}} </td>
 			</ng-container>
 			<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
