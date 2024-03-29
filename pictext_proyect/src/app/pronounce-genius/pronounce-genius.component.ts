@@ -40,7 +40,7 @@ export class PronounceGeniusComponent implements OnInit{
     await this.audioRecordingService.stopRecording();
 		this.audioRecordingService.audioBlob$.subscribe(blob => {
 			const formData = new FormData();
-			formData.append('audio', blob, 'recorded_audio.webm');
+			formData.append('audio', blob, 'recorded_audio.wav');
 			this.http.post('http://127.0.0.1:8000/api/audio/', formData)
   .subscribe((response) => {
     console.log('Audio recording uploaded successfully:', response);
