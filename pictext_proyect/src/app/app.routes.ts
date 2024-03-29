@@ -3,6 +3,7 @@ import { PicTextComponent } from './pic-text/pic-text.component';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
+import { PronounceGeniusComponent } from './pronounce-genius/pronounce-genius.component'
 
 export const routes: Routes = [
 	{
@@ -19,5 +20,8 @@ export const routes: Routes = [
 	},
 	{
 		path: '', redirectTo: '/home', pathMatch: 'full'
+	},
+	{
+		path: 'pronounce-genius', component: PronounceGeniusComponent
 	}
 ];
