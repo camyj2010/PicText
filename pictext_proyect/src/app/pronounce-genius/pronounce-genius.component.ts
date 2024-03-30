@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { RouterLink } from '@angular/router';
 import { Platform } from '@angular/cdk/platform';
 import { isPlatformBrowser } from '@angular/common';
 import { stringify } from 'querystring';
@@ -8,10 +9,14 @@ import { AudioRecorderService } from '../services/audio-recorder.service';
 
 @Component({
 	selector: 'app-pronounce-genius',
+  standalone: true,
+  imports: [RouterLink],
 	templateUrl: './pronounce-genius.component.html',
 	styleUrls: ['./pronounce-genius.component.css']
 })
 export class PronounceGeniusComponent implements OnInit{
+  selectedFile: File | null = null;
+  displayedText: string = 'Your word will appear here';
 
  isRecording = false;
   audioURL: string | null = null;
