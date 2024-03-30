@@ -1,13 +1,17 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-pronounce-genius',
+  standalone: true,
+  imports: [RouterLink],
   templateUrl: './pronounce-genius.component.html',
   styleUrls: ['./pronounce-genius.component.css']
 })
 export class PronounceGeniusComponent {
   selectedFile: File | null = null;
+  displayedText: string = 'Your word will appear here';
 
   constructor(private http: HttpClient) {}
 
