@@ -147,6 +147,11 @@ button {
 	box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
 }
 
+.card-Genius:hover {
+	transform: scale(1.01);
+	box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
 footer {
 	position: relative;
 	bottom: 0;
