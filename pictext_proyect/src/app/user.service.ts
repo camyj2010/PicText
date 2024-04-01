@@ -16,7 +16,7 @@ export interface LoginResponse {
 	providedIn: 'root',
 })
 export class UserService {
-	backendUrl = 'https://pic-text-backend.vercel.app';
+	backendUrl = 'http://localhost:3001';
 	constructor(private http: HttpClient) {
 		// This service can now make HTTP requests via `this.http`.
 	}

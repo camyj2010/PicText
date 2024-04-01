@@ -62,13 +62,22 @@ body {
 .easy-button {
     background-color: #5bc718bf;
 }
+.easy-button-no {
+    background-color: #bcdda7bf;
+}
 
 .average-button {
     background-color: #F18B13;
 }
+.average-button-no {
+    background-color: #ebc59a;
+}
 
 .hard-button {
-    background-color: #bf11119a; 
+    background-color: #d10707d7; 
+}
+.hard-button-no {
+    background-color: #c273739a; 
 }
 
 .displayed-word {
@@ -88,6 +97,7 @@ body {
     background-color: #3498db; 
     display: flex;
     align-items: center;
+		justify-content: center;
     cursor: pointer;
 
 }
