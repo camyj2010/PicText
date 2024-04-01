@@ -38,6 +38,10 @@ body {
 	padding-top: 2rem;
 }
 
+.centered p {
+	font-size: 20px;
+}
+
 .raised-button {
 	position: relative;
 	background-color: #F87A34;
@@ -85,7 +89,7 @@ body {
     display: flex;
     align-items: center;
     cursor: pointer;
-    margin: 0 auto;
+
 }
 
 .icon-tabler-refresh-dot {
@@ -118,6 +122,11 @@ body {
 	margin-bottom: 10px;
 	overflow-y: scroll;
 }
+
+.correct-text-box, .incorrect-text-box {
+	font-size: 20px; 
+	line-height: 1.5; 
+  }
 
 footer {
 	position: sticky;

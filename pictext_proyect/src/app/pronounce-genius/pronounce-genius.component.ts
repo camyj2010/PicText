@@ -27,6 +27,8 @@ userService = inject(UserService)
   displayedText: string = 'Your word will appear here';
   correctWords: string[] = [];
   incorrectWords: string[] = [];
+  max_streak: number = 0;
+  current_streak: number = 0;
 
  isRecording = false;
   audioURL: string | null = null;
@@ -55,17 +57,37 @@ userService = inject(UserService)
   async stopRecording() {
     this.isRecording = false;
     await this.audioRecordingService.stopRecording();
-		this.audioRecordingService.audioBlob$.subscribe(blob => {
-			const formData = new FormData();
-			formData.append('audio', blob, 'recorded_audio.wav');
-			this.http.post('http://127.0.0.1:8000/api/audio/', formData)
-  .subscribe((response) => {
-    console.log('Audio recording uploaded successfully:', response);
-  }, (error) => {
-    console.error('Error uploading audio recording:', error);
-  });
-		})
-  }
+    
+    this.audioRecordingService.audioBlob$.subscribe(blob => {
+        const formData = new FormData();
+        formData.append('audio', blob, 'recorded_audio.wav');
+        
+        const userEmail = sessionStorage.getItem('email');
+        const currentWord = this.displayedText;
+
+        if (userEmail && currentWord) {
+            formData.append('word', currentWord);
+            formData.append('correo', userEmail);
+            formData.append('racha', String(this.current_streak));
+
+            this.http.post<any>('http://127.0.0.1:8000/api/audio/', formData)
+            .subscribe((response) => {
+                console.log('Audio recording uploaded successfully:', response);
+
+                if (response.status == 'correcto') {
+                    this.current_streak++; // Incrementar la racha
+                } else if (response.status == 'incorrecto') {
+                    this.current_streak = 0; // Reiniciar la racha
+                }
+
+            }, (error) => {
+                console.error('Error uploading audio recording:', error);
+            });
+        } else {
+            console.error('User email or current word not found');
+        }
+    });
+}
 
   getUserData() {
     // Get the Email of the user from sessionStorage
@@ -80,7 +102,8 @@ userService = inject(UserService)
 			 const userData = response.datos_usuarios.find((user: any) => user.email === userEmail);
 			 if(userData){
 			   console.log('Found user:', userData);
-
+			   console.log('The user max streak is:', userData.max_streak)
+			   this.max_streak = userData.max_streak;
 			   // Process userData to get correct and incorrect words
 			   const processedData = this.record.fetchWords(userData);
 			   this.correctWords = processedData.correctWords;
