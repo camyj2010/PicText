@@ -69,7 +69,7 @@ export class PronounceGeniusComponent implements OnInit{
 
 		try {
 			console.log('Dificulty:', dificultyWord);
-			this.http.post<WordResponse>(this.backendURL+'/audio/random_word', dificultyWord, { observe: 'response' }).subscribe
+			this.http.post<WordResponse>(this.backendURL+'/random_word/', dificultyWord, { observe: 'response' }).subscribe
 			((res) => {
 				console.log('Word:', res.body);
 				this.displayedText = res.body? res.body.word: 'Error getting word';
@@ -89,11 +89,13 @@ export class PronounceGeniusComponent implements OnInit{
 
   async stopRecording() {
     this.isRecording = false;
-    this.audioRecordingService.stopRecording().then(() => {
+    await this.audioRecordingService.stopRecording()
+		this.audioRecordingService.audioBlob$.subscribe(blob => {
 			const formData = new FormData();
-			formData.append('audio', this.audioBlobSubscription ? this.audioBlobSubscription : new Blob(), 'recorded_audio.webm');
+			formData.append('audio', blob ? blob : new Blob(), 'recorded_audio.webm');
 			formData.append('word', this.displayedText);
 			formData.append('email', this.userEmail);
+			formData.append('racha', '3');
 			this.http.post(this.backendURL+'/audio/', formData)
   .subscribe((response) => {
     console.log('Audio recording uploaded successfully:', response);
