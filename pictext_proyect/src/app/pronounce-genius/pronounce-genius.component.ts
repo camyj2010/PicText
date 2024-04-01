@@ -108,6 +108,7 @@ export class PronounceGeniusComponent implements OnInit{
 			formData.append('racha', '3');
 			this.http.post(this.backendURL+'/audio/', formData)
   .subscribe((response) => {
+		this.getUserData()
     console.log('Audio recording uploaded successfully:', response);
   }, (error) => {
     console.error('Error uploading audio recording:', error);
@@ -119,6 +120,7 @@ export class PronounceGeniusComponent implements OnInit{
 			// Get the Email of the user from sessionStorage
 			if(isPlatformBrowser(this.platformId)){
 			  const userEmail = sessionStorage.getItem('email');
+			  this.userEmail = userEmail !== null ? userEmail : '';
 			  if(userEmail){
 				this.http.get<any>('http://127.0.0.1:8000/api/obtener/')
 				  .subscribe((response) => {
