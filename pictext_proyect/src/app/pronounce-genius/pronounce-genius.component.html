@@ -6,15 +6,34 @@
 	<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg>
 </a>
 <div class="centered">
-    <button class="raised-button easy-button">
+	@if (dificulty=='easy') {
+		<button id="easy" class="raised-button easy-button" (click)="changeColor('easy')">
         Easy
     </button>
-    <button class="raised-button average-button">
+	}@else {
+		<button id="easy" class="raised-button easy-button-no" (click)="changeColor('easy')">
+        Easy
+    </button>
+	}
+	@if (dificulty=='average') {
+		<button id="average" class="raised-button average-button" (click)="changeColor('average')">
         Average
     </button>
-    <button class="raised-button hard-button">
+	}@else {
+		<button id="average" class="raised-button average-button-no" (click)="changeColor('average')">
+        Average
+    </button>
+	}
+	@if (dificulty=='hard') {
+		<button id="hard" class="raised-button hard-button" (click)="changeColor('hard')">
         Hard
     </button>
+	}@else {
+		<button id="hard" class="raised-button hard-button-no" (click)="changeColor('hard')">
+        Hard
+    </button>
+	}
+
 </div>
 <div class="displayed-word">
     {{displayedText}}
