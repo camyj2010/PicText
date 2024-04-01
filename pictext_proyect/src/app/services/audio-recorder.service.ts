@@ -29,19 +29,28 @@ export class AudioRecorderService {
     this.mediaRecorder.start();
   }
 
-  async stopRecording() {
-    if (this.mediaRecorder) {
-      this.mediaRecorder.onstop = async () => {
-        const audioData = await new Blob(this.chunks).arrayBuffer();
-        const audioBuffer = await this.audioContext.decodeAudioData(audioData);
-        const wavBlob = bufferToWave(audioBuffer, audioBuffer.length);
-        this.audioBlobSubject.next(wavBlob);
-        this.chunks = [];
-      };
+  async stopRecording(): Promise<Blob> {
+		return new Promise<Blob>((resolve, reject) => {
+			if (this.mediaRecorder) {
+				this.mediaRecorder.onstop = async () => {
+					try {
+						const audioData = await new Blob(this.chunks).arrayBuffer();
+						const audioBuffer = await this.audioContext.decodeAudioData(audioData);
+						const wavBlob = bufferToWave(audioBuffer, audioBuffer.length);
+						this.audioBlobSubject.next(wavBlob);
+						this.chunks = [];
+						resolve(wavBlob); // Resuelve la promesa con el wavBlob
+					} catch (error) {
+						reject(error); // Rechaza la promesa si hay un error
+					}
+				};
 
-      this.mediaRecorder.stop();
-    }
-  }
+				this.mediaRecorder.stop();
+			} else {
+				reject(new Error("No media recorder available"));
+			}
+		});
+	}
 }
 function bufferToWave(abuffer:any, len:number) {
     let numOfChan = abuffer.numberOfChannels,

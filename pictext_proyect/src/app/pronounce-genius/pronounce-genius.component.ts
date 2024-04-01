@@ -89,12 +89,11 @@ export class PronounceGeniusComponent implements OnInit{
 
   async stopRecording() {
     this.isRecording = false;
-    await this.audioRecordingService.stopRecording()
-		this.audioRecordingService.audioBlob$.subscribe(blob => {
+    const blob = await this.audioRecordingService.stopRecording()
 			const formData = new FormData();
 			formData.append('audio', blob ? blob : new Blob(), 'recorded_audio.webm');
 			formData.append('word', this.displayedText);
-			formData.append('email', this.userEmail);
+			formData.append('correo', this.userEmail);
 			formData.append('racha', '3');
 			this.http.post(this.backendURL+'/audio/', formData)
   .subscribe((response) => {
@@ -102,8 +101,8 @@ export class PronounceGeniusComponent implements OnInit{
   }, (error) => {
     console.error('Error uploading audio recording:', error);
   });
-		})
-  }
+		}
+
 
 	getData(){
     if (isPlatformBrowser(this.platformId)) {
@@ -113,7 +112,7 @@ export class PronounceGeniusComponent implements OnInit{
 			this.userEmail = '';
 		}
   }
-
+  	
 	// 	// const formData = new FormData();
 	// 	// formData.append('audio', blob, 'recorded_audio.webm');
 
