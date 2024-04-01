@@ -1,11 +1,9 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild, PLATFORM_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
-import { Platform } from '@angular/cdk/platform';
 import { isPlatformBrowser } from '@angular/common';
-import { stringify } from 'querystring';
-import { DomSanitizer } from '@angular/platform-browser';
 import { AudioRecorderService } from '../services/audio-recorder.service';
+import { Subscription } from 'rxjs';
 
 
 export interface WordResponse {
@@ -24,22 +22,26 @@ export class PronounceGeniusComponent implements OnInit{
   selectedFile: File | null = null;
   displayedText: string = 'Welcome, please select the dificulty';
 	dificulty: string = '';
-
+	userEmail: string = '';
 	private backendURL = 'http://127.0.0.1:8000/api'
 
 	isRecording = false;
   audioURL: string | null = null;
-  @ViewChild('audioPlayer') audioPlayer!: ElementRef<HTMLAudioElement>;
+	//@ViewChild('audioPlayer') audioPlayer!: ElementRef<HTMLAudioElement>;
+	private audioBlobSubscription: Blob | null = null;
 
   constructor(
 		private http: HttpClient,
 		private audioRecordingService: AudioRecorderService, 
-		private cd: ChangeDetectorRef) { }
+		private cd: ChangeDetectorRef,
+		@Inject(PLATFORM_ID) private platformId: Object) { }
 
   ngOnInit() {
+		this.getData()
     this.audioRecordingService.audioBlob$.subscribe(blob => {
+			this.audioBlobSubscription = blob
       this.audioURL = window.URL.createObjectURL(blob);
-      this.audioPlayer.nativeElement.src = this.audioURL;
+      //this.audioPlayer.nativeElement.src = this.audioURL;
       this.cd.detectChanges();
     });
   }
@@ -87,10 +89,11 @@ export class PronounceGeniusComponent implements OnInit{
 
   async stopRecording() {
     this.isRecording = false;
-    await this.audioRecordingService.stopRecording();
-		this.audioRecordingService.audioBlob$.subscribe(blob => {
+    this.audioRecordingService.stopRecording().then(() => {
 			const formData = new FormData();
-			formData.append('audio', blob, 'recorded_audio.wav');
+			formData.append('audio', this.audioBlobSubscription ? this.audioBlobSubscription : new Blob(), 'recorded_audio.webm');
+			formData.append('word', this.displayedText);
+			formData.append('email', this.userEmail);
 			this.http.post(this.backendURL+'/audio/', formData)
   .subscribe((response) => {
     console.log('Audio recording uploaded successfully:', response);
@@ -98,6 +101,15 @@ export class PronounceGeniusComponent implements OnInit{
     console.error('Error uploading audio recording:', error);
   });
 		})
+  }
+
+	getData(){
+    if (isPlatformBrowser(this.platformId)) {
+			const userEmail = sessionStorage.getItem('email');
+    	this.userEmail = userEmail !== null ? userEmail : '';
+		}else{
+			this.userEmail = '';
+		}
   }
 
 	// 	// const formData = new FormData();
