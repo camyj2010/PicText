@@ -116,12 +116,18 @@ export class PronounceGeniusComponent implements OnInit {
 					this.current_streak++;
 					this.answer = 1
 					this.showAnswer = true;
-					setTimeout(() => this.showAnswer = false, 2000);
+					setTimeout(() => {
+						this.showAnswer = false
+						this.changeWord(this.dificulty)
+					}, 1500);
 				} else if (response.status == 'incorrecto') {
 					this.current_streak = 0;
 					this.answer = 0
 					this.showAnswer = true;
-					setTimeout(() => this.showAnswer = false, 2000);
+					setTimeout(() => {
+						this.showAnswer = false
+						this.changeWord(this.dificulty)
+					}, 1500);
 				}
 			}, (error) => {
 				console.error('Error uploading audio recording:', error);
