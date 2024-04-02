@@ -116,7 +116,8 @@ body {
 }
 
 .correct-alert {
-	margin-top: 1em;
+	font-size: 1rem;
+	margin-left: 1em;
 	width: 2.125rem;
 	height: 2.125rem;
 	border-radius: 50%;
@@ -127,11 +128,12 @@ body {
 }
 
 .incorrect-alert {
-	margin-top: 1em;
+	font-size: 1rem;
+	margin-left: 1em;
 	width: 2.125rem;
 	height: 2.125rem;
 	border-radius: 50%;
-	background-color: #07bd3d;
+	background-color: #c92929c4;
 	display: flex;
 	align-items: center;
 	justify-content: center;
