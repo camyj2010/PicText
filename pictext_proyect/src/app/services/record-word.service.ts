@@ -14,9 +14,9 @@ export class Record {
     if(userData && userData.trys) {
       userData.trys.forEach((tryData: any) => {
         if(tryData.correct) {
-          correctWords.push(tryData.word);
+          correctWords.push(tryData.pronunciation);
         } else {
-          incorrectWords.push(tryData.word);
+          incorrectWords.push(tryData.pronunciation);
         }
       });
     }
