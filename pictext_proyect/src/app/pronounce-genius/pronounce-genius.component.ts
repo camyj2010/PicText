@@ -35,7 +35,7 @@ export class PronounceGeniusComponent implements OnInit {
 	current_streak: number = 0;
 	dificulty: string = '';
 	userEmail: string = '';
-	private backendURL = 'http://127.0.0.1:8000/api'
+	private backendURL = 'https://ait00ls-pronouncegenius.onrender.com/api/'
 	isRecording = false;
 	showAnswer = false;
 	answer = 0;
@@ -141,7 +141,7 @@ export class PronounceGeniusComponent implements OnInit {
 			const userEmail = sessionStorage.getItem('email');
 			this.userEmail = userEmail !== null ? userEmail : '';
 			if (userEmail) {
-				this.http.get<any>('http://127.0.0.1:8000/api/obtener/')
+				this.http.get<any>('https://ait00ls-pronouncegenius.onrender.com/api/obtener/')
 					.subscribe((response) => {
 						console.log('User data:', response);
 						// Find the user by email
