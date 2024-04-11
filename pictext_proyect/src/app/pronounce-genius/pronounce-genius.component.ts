@@ -35,7 +35,7 @@ export class PronounceGeniusComponent implements OnInit {
 	current_streak: number = 0;
 	dificulty: string = '';
 	userEmail: string = '';
-	private backendURL = 'https://ait00ls-pronouncegenius.onrender.com/api/'
+	private backendURL = 'https://ait00ls-pronouncegenius.onrender.com/api'
 	isRecording = false;
 	showAnswer = false;
 	answer = 0;
